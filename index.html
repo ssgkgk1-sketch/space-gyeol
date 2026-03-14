@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Poppins:wght@200;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --bg-deep: #050505;
@@ -65,15 +64,17 @@
         }
         .generate-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--gold-glow); }
 
+        /* 결과 창 9:16 최적화 */
         #result-area {
             display: none; margin-top: 50px; text-align: center;
             animation: fadeIn 1.5s ease;
         }
         .result-image {
-            width: 320px; height: 568px;
+            width: 340px; height: 604px; /* Exact 9:16 */
             border-radius: 20px; border: 2px solid var(--bronze);
             box-shadow: 0 0 50px rgba(166, 124, 82, 0.3);
             object-fit: cover; margin-bottom: 20px;
+            background: #111;
         }
         .download-btn {
             display: inline-block; padding: 12px 30px; border-radius: 30px;
@@ -82,7 +83,6 @@
         }
         .download-btn:hover { background: var(--gold); color: #000; }
 
-        /* --- Collections --- */
         .categories { padding: 100px 50px; max-width: 1300px; margin: 0 auto; }
         .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 70px; }
         .cat-card { height: 500px; border-radius: 30px; overflow: hidden; position: relative; cursor: pointer; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(255,255,255,0.08); }
@@ -115,13 +115,13 @@
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generateArt()">CREATE</button>
+                <button class="generate-btn" onclick="generateFreeArt()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
                 <img src="" id="generated-img" class="result-image">
                 <br>
-                <a href="#" id="download-link" class="download-btn" download="my_space_gyeol.jpg">DOWNLOAD MASTERPIECE</a>
+                <a href="#" id="download-link" class="download-btn" target="_blank">DOWNLOAD MASTERPIECE</a>
             </div>
         </div>
     </section>
@@ -141,64 +141,36 @@
     </footer>
 
     <script>
-        // 키워드별 명품 이미지 데이터베이스 (사장님이 원하시는 로직)
-        const imageDB = {
-            "꽃": [
-                "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1000",
-                "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1000"
-            ],
-            "일본": [
-                "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000",
-                "https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=1000"
-            ],
-            "돈": [
-                "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=1000",
-                "https://images.unsplash.com/photo-1561414927-6d86591d0c4f?q=80&w=1000"
-            ],
-            "동물": [
-                "https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000",
-                "https://images.unsplash.com/photo-1474511320723-9a5617389965?q=80&w=1000"
-            ],
-            "인물": [
-                "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1000",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000"
-            ]
-        };
+        // 무료 무제한 AI 생성 엔진 (Pollinations.ai)
+        async function generateFreeArt() {
+            const userInput = document.getElementById('user-prompt').value;
+            if(!userInput) { alert("그리려는 풍경을 입력해주세요."); return; }
 
-        const defaultImages = [
-            "https://images.unsplash.com/photo-1536431311719-398b6704d4cc?q=80&w=1000",
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000",
-            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000"
-        ];
-
-        function generateArt() {
-            const prompt = document.getElementById('user-prompt').value;
-            if(!prompt) { alert("그리려는 풍경을 입력해주세요."); return; }
-            
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
+            const img = document.getElementById('generated-img');
+            const downloadBtn = document.getElementById('download-link');
+
             loading.style.display = 'block';
             resultArea.style.display = 'none';
+
+            // 명품 퀄리티를 위한 자동 보정 키워드 추가
+            const enhancedPrompt = encodeURIComponent(userInput + ", masterpiece, high quality, luxury, cinematic lighting, 8k resolution, elegant, vertical 9:16 aspect ratio");
             
-            setTimeout(() => {
+            // 무료 AI 엔진 호출 주소 생성
+            const seed = Math.floor(Math.random() * 1000000); // 매번 다른 그림이 나오게 함
+            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&model=flux`;
+
+            // 이미지 로딩 대기
+            const tempImg = new Image();
+            tempImg.src = apiUrl;
+            tempImg.onload = () => {
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
-                const img = document.getElementById('generated-img');
-                
-                // 키워드 매칭 로직 (사장님이 입력한 글자에 따라 어울리는 사진 선택!)
-                let source = defaultImages;
-                for (let key in imageDB) {
-                    if (prompt.includes(key)) {
-                        source = imageDB[key];
-                        break;
-                    }
-                }
-                
-                const finalImg = source[Math.floor(Math.random() * source.length)];
-                img.src = finalImg;
-                document.getElementById('download-link').href = finalImg;
+                img.src = apiUrl;
+                downloadBtn.href = apiUrl;
                 resultArea.scrollIntoView({ behavior: 'smooth' });
-            }, 2500);
+            };
         }
     </script>
 </body>
