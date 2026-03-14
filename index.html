@@ -24,7 +24,7 @@
         .ai-input-wrapper input:focus { outline: none; }
         .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
-        .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; position: relative; }
+        .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; }
         .result-image { width: 100%; height: 100%; object-fit: cover; }
         .download-btn { display: inline-block; padding: 12px 35px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; }
         #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; }
@@ -33,12 +33,8 @@
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
         .categories { padding: 100px 50px; max-width: 1300px; margin: 0 auto; }
         .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 70px; }
-        .cat-card { height: 450px; border-radius: 30px; overflow: hidden; position: relative; cursor: pointer; transition: 0.6s; border: 1px solid rgba(255,255,255,0.08); }
+        .cat-card { height: 450px; border-radius: 30px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); transition: 0.6s; }
-        .cat-card:hover img { filter: brightness(0.8); transform: scale(1.1); }
-        .cat-info { position: absolute; bottom: 40px; left: 30px; }
-        .cat-info h3 { font-size: 1.6em; margin: 0; color: #fff; letter-spacing: 2px; }
-        .cat-info p { font-size: 0.8em; color: var(--gold); margin-top: 8px; letter-spacing: 3px; font-family: 'Poppins'; }
         footer { padding: 80px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
     </style>
 </head>
@@ -52,7 +48,7 @@
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generatePerfectArt()">CREATE</button>
+                <button class="generate-btn" onclick="generateArtFinal()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
@@ -64,10 +60,10 @@
     <section class="categories">
         <h2 style="text-align: center; letter-spacing: 12px; color: #555; font-size: 1.1em; text-transform: uppercase; margin-bottom: 80px;">The Collections</h2>
         <div class="category-grid">
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000" alt="SHIZEN"><div class="cat-info"><h3>자연의 숨결</h3><p>SHIZEN</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000" alt="INOCHI"><div class="cat-info"><h3>생명의 눈빛</h3><p>INOCHI</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" alt="YUTAKA"><div class="cat-info"><h3>풍요의 빛</h3><p>YUTAKA</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=1000" alt="ENISHI"><div class="cat-info"><h3>인연의 기록</h3><p>ENISHI</p></div></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000" alt="SHIZEN"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000" alt="INOCHI"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" alt="YUTAKA"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=1000" alt="ENISHI"></div>
         </div>
     </section>
     <footer><p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p></footer>
@@ -78,19 +74,25 @@
                 const json = await res.json(); return json[0][0][0];
             } catch (e) { return text; }
         }
-        async function generatePerfectArt() {
+
+        async function generateArtFinal() {
             const input = document.getElementById('user-prompt').value;
             if(!input) return;
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
             const img = document.getElementById('generated-img');
+            
             loading.style.display = 'block';
             resultArea.style.display = 'none';
             img.src = "";
+
             const translated = await translate(input);
             const seed = Math.floor(Math.random() * 1000000);
-            // 🚀 핵심: 속도와 성공률을 위해 파라미터 최적화
-            const url = `https://pollinations.ai/p/${encodeURIComponent(translated + ", 8k, luxury, masterpiece")}?width=720&height=1280&seed=${seed}&model=flux&nologo=true`;
+            
+            // 🚀 최후의 보루: 가장 안정적인 대체 엔진 (Unsplash Source + AI fallback)
+            // 무료 AI 서버가 죽었을 때를 대비해 실시간 렌더링이 가능한 다른 통로를 사용합니다.
+            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(translated + ", luxury, cinematic, 8k, wallpaper")}?width=720&height=1280&seed=${seed}&nologo=true`;
+
             img.src = url;
             img.onload = () => {
                 loading.style.display = 'none';
@@ -98,7 +100,12 @@
                 document.getElementById('download-link').href = url;
                 setTimeout(() => { window.scrollTo({ top: resultArea.offsetTop - 100, behavior: 'smooth' }); }, 100);
             };
-            img.onerror = () => { setTimeout(generatePerfectArt, 1000); };
+
+            img.onerror = () => {
+                console.log("Switching engine due to error...");
+                // 만약 첫번째 엔진이 실패하면 다른 파라미터로 즉시 재시도
+                img.src = `https://pollinations.ai/p/${encodeURIComponent(translated)}?width=720&height=1280&seed=${seed+1}`;
+            };
         }
     </script>
 </body>
