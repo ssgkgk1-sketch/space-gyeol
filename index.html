@@ -17,81 +17,27 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        body, html { 
-            margin: 0; padding: 0; 
-            background-color: var(--bg-deep); 
-            color: var(--text-main); 
-            font-family: 'Gowun Batang', serif; 
-            scroll-behavior: smooth;
-        }
+        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; }
 
-        nav { 
-            position: fixed; top: 0; width: 100%; 
-            padding: 30px 50px; display: flex; 
-            justify-content: space-between; align-items: center; 
-            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); 
-            box-sizing: border-box; 
-        }
+        nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
 
-        /* 첫 섹션 높이 제한 해제 */
-        .hero { 
-            min-height: 100vh; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            text-align: center; position: relative; 
-            padding: 120px 20px 60px 20px; 
-            box-sizing: border-box;
-        }
-        .hero-bg { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background-image: url('images/hero_omotenashi.jpg'); 
-            background-size: cover; background-position: center; 
-            filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; 
-        }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 120px 20px 60px 20px; box-sizing: border-box; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero_omotenashi.jpg'); background-size: cover; background-position: center; filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; }
         .hero h1 { font-size: 4em; margin: 0; letter-spacing: 12px; color: var(--bronze); animation: glow 3s infinite alternate; }
         .welcome-text { font-size: 0.9em; color: var(--gold); margin-bottom: 20px; letter-spacing: 8px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
         .hero p { font-size: 1.3em; color: #888; margin-top: 15px; letter-spacing: 2px; }
 
         .ai-container { margin-top: 50px; width: 100%; max-width: 750px; }
-        .ai-input-wrapper { 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid rgba(166, 124, 82, 0.3); 
-            border-radius: 60px; padding: 8px 8px 8px 30px; 
-            display: flex; align-items: center; backdrop-filter: blur(20px); 
-        }
+        .ai-input-wrapper { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 124, 82, 0.3); border-radius: 60px; padding: 8px 8px 8px 30px; display: flex; align-items: center; backdrop-filter: blur(20px); }
         .ai-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; font-size: 1.1em; font-family: 'Gowun Batang'; }
         .ai-input-wrapper input:focus { outline: none; }
-        .generate-btn { 
-            background: linear-gradient(45deg, var(--bronze), var(--gold)); 
-            color: #000; border: none; padding: 15px 40px; border-radius: 50px; 
-            font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; 
-        }
+        .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
         
-        /* 결과 영역 가시성 강화 */
-        #result-area { 
-            display: none; 
-            margin-top: 40px; 
-            text-align: center; 
-            width: 100%; 
-            animation: fadeIn 1s ease;
-        }
-        .result-image-wrapper { 
-            width: 320px; 
-            height: 568px; /* 9:16 Ratio */
-            margin: 0 auto 25px; 
-            border-radius: 20px; 
-            border: 2px solid var(--bronze); 
-            box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); 
-            overflow: hidden; 
-            background: #111;
-        }
+        #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; animation: fadeIn 1s ease; }
+        .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; }
         .result-image { width: 100%; height: 100%; object-fit: cover; }
-        .download-btn { 
-            display: inline-block; padding: 12px 35px; border-radius: 30px; 
-            border: 1px solid var(--gold); color: var(--gold); 
-            text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; 
-        }
+        .download-btn { display: inline-block; padding: 12px 35px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; }
         .download-btn:hover { background: var(--gold); color: #000; }
 
         .categories { padding: 80px 50px; max-width: 1200px; margin: 0 auto; }
@@ -100,13 +46,7 @@
         .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
 
         #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; }
-        .spinner { 
-            width: 35px; height: 35px; 
-            border: 3px solid rgba(166, 124, 82, 0.1); 
-            border-top-color: var(--gold); 
-            border-radius: 50%; animation: spin 1s linear infinite; 
-            margin: 0 auto 15px; 
-        }
+        .spinner { width: 35px; height: 35px; border: 3px solid rgba(166, 124, 82, 0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -146,7 +86,8 @@
     <script>
         function generateFinalArt() {
             const input = document.getElementById('user-prompt').value;
-            if(!input) return;
+            if(!input) { alert("키워드를 입력해 주세요."); return; }
+            
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
             const img = document.getElementById('generated-img');
@@ -156,10 +97,10 @@
             img.src = "";
 
             const seed = Math.floor(Math.random() * 1000000);
-            // 9:16 비율과 명품 퀄리티를 강제하는 주소 생성
-            const url = `https://pollinations.ai/p/${encodeURIComponent(input + ", masterpiece, high quality, 8k, cinematic, luxury style, vertical wallpaper, 9:16 ratio")}?width=1080&height=1920&seed=${seed}&nologo=true`;
+            const prompt = encodeURIComponent(input + ", masterpiece, 8k, luxury style, high quality, 9:16 aspect ratio");
+            const url = `https://pollinations.ai/p/${prompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
 
-            // 가상의 이미지 객체로 먼저 로드
+            // 이미지 로딩 핸들러
             const loader = new Image();
             loader.src = url;
             loader.onload = () => {
@@ -167,23 +108,19 @@
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
                 document.getElementById('download-link').href = url;
-                // 결과창으로 자동 스크롤
+                
                 setTimeout(() => {
                     window.scrollTo({
-                        top: document.getElementById('result-area').offsetTop - 100,
+                        top: resultArea.offsetTop - 100,
                         behavior: 'smooth'
                     });
                 }, 100);
             };
-            
-            // 15초 이상 걸리면 강제로 보여줌
-            setTimeout(() => {
-                if(loading.style.display !== 'none') {
-                    img.src = url;
-                    loading.style.display = 'none';
-                    resultArea.style.display = 'block';
-                }
-            }, 15000);
+
+            loader.onerror = () => {
+                alert("이미지 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
+                loading.style.display = 'none';
+            };
         }
     </script>
 </body>
