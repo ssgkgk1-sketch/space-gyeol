@@ -17,7 +17,7 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; }
+        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; overflow-y: auto; }
 
         nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
@@ -97,10 +97,9 @@
             img.src = "";
 
             const seed = Math.floor(Math.random() * 1000000);
-            const prompt = encodeURIComponent(input + ", masterpiece, 8k, luxury style, high quality, 9:16 aspect ratio");
+            const prompt = encodeURIComponent(input + ", masterpiece, high quality, 8k, luxury cinematic, 9:16 aspect ratio");
             const url = `https://pollinations.ai/p/${prompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
 
-            // 이미지 로딩 핸들러
             const loader = new Image();
             loader.src = url;
             loader.onload = () => {
