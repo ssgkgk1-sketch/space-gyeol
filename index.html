@@ -17,137 +17,173 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; }
+        body, html { 
+            margin: 0; padding: 0; 
+            background-color: var(--bg-deep); 
+            color: var(--text-main); 
+            font-family: 'Gowun Batang', serif; 
+            scroll-behavior: smooth;
+        }
 
-        nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
+        nav { 
+            position: fixed; top: 0; width: 100%; 
+            padding: 30px 50px; display: flex; 
+            justify-content: space-between; align-items: center; 
+            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); 
+            box-sizing: border-box; 
+        }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
 
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; padding: 0 20px; }
-        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero_omotenashi.jpg'); background-size: cover; background-position: center; filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; }
-        .hero h1 { font-size: 4.5em; margin: 0; letter-spacing: 15px; color: var(--bronze); animation: glow 3s infinite alternate; }
-        .welcome-text { font-size: 1em; color: var(--gold); margin-bottom: 20px; letter-spacing: 8px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
-        .hero p { font-size: 1.4em; color: #888; margin-top: 20px; letter-spacing: 2px; }
+        /* 첫 섹션 높이 제한 해제 */
+        .hero { 
+            min-height: 100vh; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; 
+            text-align: center; position: relative; 
+            padding: 120px 20px 60px 20px; 
+            box-sizing: border-box;
+        }
+        .hero-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background-image: url('images/hero_omotenashi.jpg'); 
+            background-size: cover; background-position: center; 
+            filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; 
+        }
+        .hero h1 { font-size: 4em; margin: 0; letter-spacing: 12px; color: var(--bronze); animation: glow 3s infinite alternate; }
+        .welcome-text { font-size: 0.9em; color: var(--gold); margin-bottom: 20px; letter-spacing: 8px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
+        .hero p { font-size: 1.3em; color: #888; margin-top: 15px; letter-spacing: 2px; }
 
-        .ai-container { margin-top: 60px; width: 100%; max-width: 750px; position: relative; }
-        .ai-input-wrapper { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 124, 82, 0.3); border-radius: 60px; padding: 10px 10px 10px 35px; display: flex; align-items: center; backdrop-filter: blur(20px); }
+        .ai-container { margin-top: 50px; width: 100%; max-width: 750px; }
+        .ai-input-wrapper { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(166, 124, 82, 0.3); 
+            border-radius: 60px; padding: 8px 8px 8px 30px; 
+            display: flex; align-items: center; backdrop-filter: blur(20px); 
+        }
         .ai-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; font-size: 1.1em; font-family: 'Gowun Batang'; }
         .ai-input-wrapper input:focus { outline: none; }
-        .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 18px 50px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
-        .generate-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--gold-glow); }
-
-        #result-area { display: none; margin-top: 50px; text-align: center; animation: fadeIn 1s ease; }
+        .generate-btn { 
+            background: linear-gradient(45deg, var(--bronze), var(--gold)); 
+            color: #000; border: none; padding: 15px 40px; border-radius: 50px; 
+            font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; 
+        }
+        
+        /* 결과 영역 가시성 강화 */
+        #result-area { 
+            display: none; 
+            margin-top: 40px; 
+            text-align: center; 
+            width: 100%; 
+            animation: fadeIn 1s ease;
+        }
         .result-image-wrapper { 
-            width: 340px; height: 604px; 
-            margin: 0 auto 20px;
-            border-radius: 20px; border: 2px solid var(--bronze);
-            box-shadow: 0 0 50px rgba(166, 124, 82, 0.3);
-            overflow: hidden;
+            width: 320px; 
+            height: 568px; /* 9:16 Ratio */
+            margin: 0 auto 25px; 
+            border-radius: 20px; 
+            border: 2px solid var(--bronze); 
+            box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); 
+            overflow: hidden; 
             background: #111;
         }
         .result-image { width: 100%; height: 100%; object-fit: cover; }
-        .download-btn { display: inline-block; padding: 12px 30px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.9em; transition: 0.3s; }
+        .download-btn { 
+            display: inline-block; padding: 12px 35px; border-radius: 30px; 
+            border: 1px solid var(--gold); color: var(--gold); 
+            text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; 
+        }
         .download-btn:hover { background: var(--gold); color: #000; }
 
-        .categories { padding: 100px 50px; max-width: 1300px; margin: 0 auto; }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 70px; }
-        .cat-card { height: 500px; border-radius: 30px; overflow: hidden; position: relative; cursor: pointer; transition: 0.6s; border: 1px solid rgba(255,255,255,0.08); }
-        .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); transition: 0.6s; }
-        .cat-card:hover { border-color: var(--gold); transform: translateY(-10px); }
-        .cat-card:hover img { filter: brightness(0.8); transform: scale(1.1); }
-        .cat-info { position: absolute; bottom: 40px; left: 30px; }
-        .cat-info h3 { font-size: 1.6em; margin: 0; color: #fff; letter-spacing: 2px; }
-        .cat-info p { font-size: 0.8em; color: var(--gold); margin-top: 8px; letter-spacing: 3px; font-family: 'Poppins'; }
+        .categories { padding: 80px 50px; max-width: 1200px; margin: 0 auto; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; }
+        .cat-card { height: 450px; border-radius: 25px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
+        .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
 
+        #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; }
+        .spinner { 
+            width: 35px; height: 35px; 
+            border: 3px solid rgba(166, 124, 82, 0.1); 
+            border-top-color: var(--gold); 
+            border-radius: 50%; animation: spin 1s linear infinite; 
+            margin: 0 auto 15px; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; text-align: center; }
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(166, 124, 82, 0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
-        footer { padding: 80px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
+        footer { padding: 60px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
     </style>
 </head>
 <body>
     <nav><div class="logo">空間의 結</div></nav>
-
     <section class="hero">
         <div class="hero-bg"></div>
         <div class="welcome-text">Omotenashi Spirit</div>
         <h1>공간의 결</h1>
         <p>지극한 예우로 빚어낸,<br>당신만을 위한 단 하나의 풍경을 선사합니다.</p>
-
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generateTurboArt()">CREATE</button>
+                <button class="generate-btn" onclick="generateFinalArt()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
-                <div class="result-image-wrapper">
-                    <img src="" id="generated-img" class="result-image">
-                </div>
+                <div class="result-image-wrapper"><img src="" id="generated-img" class="result-image"></div>
                 <a href="#" id="download-link" class="download-btn" target="_blank">DOWNLOAD MASTERPIECE</a>
             </div>
         </div>
-    </header>
-
+    </section>
     <section class="categories">
-        <h2 style="text-align: center; letter-spacing: 12px; color: #555; font-size: 1.1em; text-transform: uppercase; margin-bottom: 80px;">The Collections</h2>
+        <h2 style="text-align: center; letter-spacing: 12px; color: #555; font-size: 1.1em; text-transform: uppercase; margin-bottom: 60px;">The Collections</h2>
         <div class="category-grid">
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000" alt="SHIZEN"><div class="cat-info"><h3>자연의 숨결</h3><p>SHIZEN</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000" alt="INOCHI"><div class="cat-info"><h3>생명의 눈빛</h3><p>INOCHI</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" alt="YUTAKA"><div class="cat-info"><h3>풍요의 빛</h3><p>YUTAKA</p></div></div>
-            <div class="cat-card"><img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=1000" alt="ENISHI"><div class="cat-info"><h3>인연의 기록</h3><p>ENISHI</p></div></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000" alt="SHIZEN"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000" alt="INOCHI"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" alt="YUTAKA"></div>
+            <div class="cat-card"><img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=1000" alt="ENISHI"></div>
         </div>
     </section>
-
-    <footer>
-        <p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p>
-    </footer>
-
+    <footer><p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p></footer>
     <script>
-        function generateTurboArt() {
-            const userInput = document.getElementById('user-prompt').value;
-            if(!userInput) { alert("그리려는 풍경을 입력해주세요."); return; }
-
+        function generateFinalArt() {
+            const input = document.getElementById('user-prompt').value;
+            if(!input) return;
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
             const img = document.getElementById('generated-img');
-            const downloadBtn = document.getElementById('download-link');
-
+            
             loading.style.display = 'block';
             resultArea.style.display = 'none';
-            img.src = ""; // 이전 이미지 초기화
+            img.src = "";
 
-            // 키워드 조합 및 인코딩
-            const enhancedPrompt = encodeURIComponent(userInput + ", high quality, 8k, cinematic lighting, vertical wallpaper, 9:16 ratio");
             const seed = Math.floor(Math.random() * 1000000);
-            
-            // 이미지 생성을 위한 Pollinations URL (안전한 파라미터 사용)
-            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&nologo=true&enhance=true`;
+            // 9:16 비율과 명품 퀄리티를 강제하는 주소 생성
+            const url = `https://pollinations.ai/p/${encodeURIComponent(input + ", masterpiece, high quality, 8k, cinematic, luxury style, vertical wallpaper, 9:16 ratio")}?width=1080&height=1920&seed=${seed}&nologo=true`;
 
-            // 1. 이미지 객체 생성 및 로드 시작
-            const tempImg = new Image();
-            tempImg.src = apiUrl;
-
-            // 2. 이미지가 로드되었을 때 실행
-            tempImg.onload = function() {
-                img.src = apiUrl;
-                downloadBtn.href = apiUrl;
+            // 가상의 이미지 객체로 먼저 로드
+            const loader = new Image();
+            loader.src = url;
+            loader.onload = () => {
+                img.src = url;
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
-                resultArea.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('download-link').href = url;
+                // 결과창으로 자동 스크롤
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: document.getElementById('result-area').offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }, 100);
             };
-
-            // 3. 로딩이 너무 오래 걸릴 경우 대비 (타임아웃 20초)
+            
+            // 15초 이상 걸리면 강제로 보여줌
             setTimeout(() => {
-                if (loading.style.display !== 'none') {
-                    img.src = apiUrl; // 강제로 소스 주입
+                if(loading.style.display !== 'none') {
+                    img.src = url;
                     loading.style.display = 'none';
                     resultArea.style.display = 'block';
                 }
-            }, 20000);
+            }, 15000);
         }
     </script>
 </body>
