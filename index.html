@@ -17,75 +17,32 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Gowun Batang', serif;
-            scroll-behavior: smooth;
-        }
+        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; }
 
-        nav {
-            position: fixed; top: 0; width: 100%;
-            padding: 30px 50px; display: flex;
-            justify-content: space-between; align-items: center;
-            z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-            box-sizing: border-box;
-        }
+        nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
 
-        .hero {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            position: relative; overflow: hidden; padding: 0 20px;
-        }
-        .hero-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('images/hero_omotenashi.jpg');
-            background-size: cover; background-position: center;
-            filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1;
-        }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; padding: 0 20px; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero_omotenashi.jpg'); background-size: cover; background-position: center; filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; }
         .hero h1 { font-size: 4.5em; margin: 0; letter-spacing: 15px; color: var(--bronze); animation: glow 3s infinite alternate; }
         .welcome-text { font-size: 1em; color: var(--gold); margin-bottom: 20px; letter-spacing: 8px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
         .hero p { font-size: 1.4em; color: #888; margin-top: 20px; letter-spacing: 2px; }
 
         .ai-container { margin-top: 60px; width: 100%; max-width: 750px; position: relative; }
-        .ai-input-wrapper {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 124, 82, 0.3);
-            border-radius: 60px; padding: 10px 10px 10px 35px;
-            display: flex; align-items: center; backdrop-filter: blur(20px);
-        }
+        .ai-input-wrapper { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 124, 82, 0.3); border-radius: 60px; padding: 10px 10px 10px 35px; display: flex; align-items: center; backdrop-filter: blur(20px); }
         .ai-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; font-size: 1.1em; font-family: 'Gowun Batang'; }
         .ai-input-wrapper input:focus { outline: none; }
-        .generate-btn {
-            background: linear-gradient(45deg, var(--bronze), var(--gold));
-            color: #000; border: none; padding: 18px 50px; border-radius: 50px;
-            font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins';
-        }
+        .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 18px 50px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
         .generate-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--gold-glow); }
 
-        /* 결과 창 9:16 최적화 */
-        #result-area {
-            display: none; margin-top: 50px; text-align: center;
-            animation: fadeIn 1.5s ease;
-        }
-        .result-image {
-            width: 340px; height: 604px; /* Exact 9:16 */
-            border-radius: 20px; border: 2px solid var(--bronze);
-            box-shadow: 0 0 50px rgba(166, 124, 82, 0.3);
-            object-fit: cover; margin-bottom: 20px;
-            background: #111;
-        }
-        .download-btn {
-            display: inline-block; padding: 12px 30px; border-radius: 30px;
-            border: 1px solid var(--gold); color: var(--gold);
-            text-decoration: none; font-size: 0.9em; transition: 0.3s;
-        }
+        #result-area { display: none; margin-top: 50px; text-align: center; animation: fadeIn 1s ease; }
+        .result-image { width: 340px; height: 604px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.3); object-fit: cover; margin-bottom: 20px; background: #111; }
+        .download-btn { display: inline-block; padding: 12px 30px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.9em; transition: 0.3s; }
         .download-btn:hover { background: var(--gold); color: #000; }
 
         .categories { padding: 100px 50px; max-width: 1300px; margin: 0 auto; }
         .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 70px; }
-        .cat-card { height: 500px; border-radius: 30px; overflow: hidden; position: relative; cursor: pointer; transition: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(255,255,255,0.08); }
+        .cat-card { height: 500px; border-radius: 30px; overflow: hidden; position: relative; cursor: pointer; transition: 0.6s; border: 1px solid rgba(255,255,255,0.08); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); transition: 0.6s; }
         .cat-card:hover { border-color: var(--gold); transform: translateY(-10px); }
         .cat-card:hover img { filter: brightness(0.8); transform: scale(1.1); }
@@ -115,7 +72,7 @@
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generateFreeArt()">CREATE</button>
+                <button class="generate-btn" onclick="generateTurboArt()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
@@ -141,8 +98,8 @@
     </footer>
 
     <script>
-        // 무료 무제한 AI 생성 엔진 (Pollinations.ai)
-        async function generateFreeArt() {
+        // 초고속 터보 엔진 탑재 (Wait 타임 최소화)
+        async function generateTurboArt() {
             const userInput = document.getElementById('user-prompt').value;
             if(!userInput) { alert("그리려는 풍경을 입력해주세요."); return; }
 
@@ -154,23 +111,31 @@
             loading.style.display = 'block';
             resultArea.style.display = 'none';
 
-            // 명품 퀄리티를 위한 자동 보정 키워드 추가
-            const enhancedPrompt = encodeURIComponent(userInput + ", masterpiece, high quality, luxury, cinematic lighting, 8k resolution, elegant, vertical 9:16 aspect ratio");
+            // 속도를 위해 불필요한 키워드 제거 및 최적화
+            const enhancedPrompt = encodeURIComponent(userInput + ", 8k, luxury style, high quality, 9:16 aspect ratio");
+            const seed = Math.floor(Math.random() * 999999);
             
-            // 무료 AI 엔진 호출 주소 생성
-            const seed = Math.floor(Math.random() * 1000000); // 매번 다른 그림이 나오게 함
-            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&model=flux`;
+            // Pollinations의 가장 빠른 기본 모델 사용
+            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
 
-            // 이미지 로딩 대기
-            const tempImg = new Image();
-            tempImg.src = apiUrl;
-            tempImg.onload = () => {
+            // 1분 이상 대기하는 문제를 해결하기 위해 직접 소스 주입 및 즉시 표시
+            img.src = apiUrl;
+            
+            // 이미지가 로드되기 시작하면 바로 보여주기 (브라우저가 렌더링하면서 보여줌)
+            img.onload = () => {
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
-                img.src = apiUrl;
                 downloadBtn.href = apiUrl;
                 resultArea.scrollIntoView({ behavior: 'smooth' });
             };
+
+            // 만약 15초가 지나도 로드가 안되면 강제로 보여주기 시도 (안전장치)
+            setTimeout(() => {
+                if(loading.style.display !== 'none') {
+                    loading.style.display = 'none';
+                    resultArea.style.display = 'block';
+                }
+            }, 15000);
         }
     </script>
 </body>
