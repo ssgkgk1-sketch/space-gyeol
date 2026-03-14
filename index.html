@@ -93,15 +93,6 @@
         .cat-info h3 { font-size: 1.6em; margin: 0; color: #fff; letter-spacing: 2px; }
         .cat-info p { font-size: 0.8em; color: var(--gold); margin-top: 8px; letter-spacing: 3px; font-family: 'Poppins'; }
 
-        /* --- Hall of Fame TOP 3 --- */
-        .gallery { padding: 100px 50px; max-width: 1000px; margin: 0 auto; background: rgba(166, 124, 82, 0.02); border-radius: 50px; }
-        .gallery-title { text-align: center; margin-bottom: 60px; }
-        .gallery-title h2 { font-size: 2.5em; color: var(--gold); letter-spacing: 10px; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .gallery-card { height: 450px; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); position: relative; }
-        .gallery-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
-        .gallery-card .rank { position: absolute; top: 20px; left: 20px; background: var(--gold); color: #000; padding: 5px 12px; border-radius: 10px; font-weight: 800; font-size: 0.8em; }
-
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -145,42 +136,45 @@
         </div>
     </section>
 
-    <section class="gallery">
-        <div class="gallery-title">
-            <h2>HALL OF FAME</h2>
-            <p style="color: #666; letter-spacing: 3px;">명예의 전당 : TOP 3 Masterpieces</p>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-card"><div class="rank">TOP 1</div><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000" alt="Rank 1"></div>
-            <div class="gallery-card"><div class="rank">TOP 2</div><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000" alt="Rank 2"></div>
-            <div class="gallery-card"><div class="rank">TOP 3</div><img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1000" alt="Rank 3"></div>
-        </div>
-    </section>
-
     <footer>
         <p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p>
     </footer>
 
     <script>
-        function switchTab(id, el) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-            window.scrollTo(0,0);
-        }
+        // 키워드별 명품 이미지 데이터베이스 (사장님이 원하시는 로직)
+        const imageDB = {
+            "꽃": [
+                "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1000",
+                "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1000"
+            ],
+            "일본": [
+                "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000",
+                "https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=1000"
+            ],
+            "돈": [
+                "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=1000",
+                "https://images.unsplash.com/photo-1561414927-6d86591d0c4f?q=80&w=1000"
+            ],
+            "동물": [
+                "https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=1000",
+                "https://images.unsplash.com/photo-1474511320723-9a5617389965?q=80&w=1000"
+            ],
+            "인물": [
+                "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1000",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000"
+            ]
+        };
 
-        // 수성님, 매번 다른 사진이 나오도록 랜덤 엔진을 장착했습니다!
-        const testImages = [
+        const defaultImages = [
             "https://images.unsplash.com/photo-1536431311719-398b6704d4cc?q=80&w=1000",
             "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000",
-            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000",
-            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1000"
+            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000"
         ];
 
         function generateArt() {
             const prompt = document.getElementById('user-prompt').value;
             if(!prompt) { alert("그리려는 풍경을 입력해주세요."); return; }
+            
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
             loading.style.display = 'block';
@@ -190,9 +184,19 @@
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
                 const img = document.getElementById('generated-img');
-                // 랜덤 이미지 선택 로직!
-                img.src = testImages[Math.floor(Math.random() * testImages.length)];
-                document.getElementById('download-link').href = img.src;
+                
+                // 키워드 매칭 로직 (사장님이 입력한 글자에 따라 어울리는 사진 선택!)
+                let source = defaultImages;
+                for (let key in imageDB) {
+                    if (prompt.includes(key)) {
+                        source = imageDB[key];
+                        break;
+                    }
+                }
+                
+                const finalImg = source[Math.floor(Math.random() * source.length)];
+                img.src = finalImg;
+                document.getElementById('download-link').href = finalImg;
                 resultArea.scrollIntoView({ behavior: 'smooth' });
             }, 2500);
         }
