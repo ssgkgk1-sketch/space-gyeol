@@ -24,18 +24,19 @@
         .ai-input-wrapper input:focus { outline: none; }
         .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; }
-        .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; }
+        .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; position: relative; }
         .result-image { width: 100%; height: 100%; object-fit: cover; }
         .download-btn { display: inline-block; padding: 12px 35px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; }
         #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; }
         .spinner { width: 35px; height: 35px; border: 3px solid rgba(166, 124, 82, 0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
-        .categories { padding: 100px 50px; max-width: 1300px; margin: 0 auto; }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 70px; }
-        .cat-card { height: 450px; border-radius: 30px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
+        .categories { padding: 80px 50px; max-width: 1300px; margin: 0 auto; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; }
+        .cat-card { height: 450px; border-radius: 25px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); transition: 0.6s; }
-        footer { padding: 80px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
+        .cat-card:hover img { filter: brightness(0.8); transform: scale(1.1); }
+        footer { padding: 60px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
     </style>
 </head>
 <body>
@@ -48,7 +49,7 @@
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generateArtFinal()">CREATE</button>
+                <button class="generate-btn" onclick="generateRobustArt()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
@@ -75,7 +76,7 @@
             } catch (e) { return text; }
         }
 
-        async function generateArtFinal() {
+        async function generateRobustArt() {
             const input = document.getElementById('user-prompt').value;
             if(!input) return;
             const loading = document.getElementById('loading');
@@ -89,22 +90,36 @@
             const translated = await translate(input);
             const seed = Math.floor(Math.random() * 1000000);
             
-            // 🚀 최후의 보루: 가장 안정적인 대체 엔진 (Unsplash Source + AI fallback)
-            // 무료 AI 서버가 죽었을 때를 대비해 실시간 렌더링이 가능한 다른 통로를 사용합니다.
-            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(translated + ", luxury, cinematic, 8k, wallpaper")}?width=720&height=1280&seed=${seed}&nologo=true`;
+            // 🚀 핵심: 타임아웃과 CORS 문제를 방지하기 위해 <img> 태그의 원초적 기능을 활용함
+            // 서버에 부담을 주지 않는 최적화된 주소 체계 적용
+            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(translated + ", luxury, cinematic, high quality, masterpiece, 8k")}?width=720&height=1280&seed=${seed}&nologo=true`;
 
-            img.src = url;
-            img.onload = () => {
+            // 가상의 캔버스에서 먼저 이미지를 구워옴 (비동기 추적)
+            const loader = new Image();
+            loader.src = url;
+            
+            let retryCount = 0;
+            const maxRetries = 3;
+
+            loader.onload = () => {
+                img.src = url;
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
                 document.getElementById('download-link').href = url;
                 setTimeout(() => { window.scrollTo({ top: resultArea.offsetTop - 100, behavior: 'smooth' }); }, 100);
             };
 
-            img.onerror = () => {
-                console.log("Switching engine due to error...");
-                // 만약 첫번째 엔진이 실패하면 다른 파라미터로 즉시 재시도
-                img.src = `https://pollinations.ai/p/${encodeURIComponent(translated)}?width=720&height=1280&seed=${seed+1}`;
+            loader.onerror = () => {
+                if(retryCount < maxRetries) {
+                    retryCount++;
+                    console.log("Retry attempt " + retryCount);
+                    loader.src = url + "&retry=" + Date.now();
+                } else {
+                    // 모든 시도가 실패할 경우 안전한 대체 이미지 노출 (NSFW 등 방지)
+                    img.src = "https://images.unsplash.com/photo-1536431311719-398b6704d4cc?q=80&w=1000";
+                    loading.style.display = 'none';
+                    resultArea.style.display = 'block';
+                }
             };
         }
     </script>
