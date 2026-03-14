@@ -36,7 +36,15 @@
         .generate-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--gold-glow); }
 
         #result-area { display: none; margin-top: 50px; text-align: center; animation: fadeIn 1s ease; }
-        .result-image { width: 340px; height: 604px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.3); object-fit: cover; margin-bottom: 20px; background: #111; }
+        .result-image-wrapper { 
+            width: 340px; height: 604px; 
+            margin: 0 auto 20px;
+            border-radius: 20px; border: 2px solid var(--bronze);
+            box-shadow: 0 0 50px rgba(166, 124, 82, 0.3);
+            overflow: hidden;
+            background: #111;
+        }
+        .result-image { width: 100%; height: 100%; object-fit: cover; }
         .download-btn { display: inline-block; padding: 12px 30px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.9em; transition: 0.3s; }
         .download-btn:hover { background: var(--gold); color: #000; }
 
@@ -76,12 +84,13 @@
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
-                <img src="" id="generated-img" class="result-image">
-                <br>
+                <div class="result-image-wrapper">
+                    <img src="" id="generated-img" class="result-image">
+                </div>
                 <a href="#" id="download-link" class="download-btn" target="_blank">DOWNLOAD MASTERPIECE</a>
             </div>
         </div>
-    </section>
+    </header>
 
     <section class="categories">
         <h2 style="text-align: center; letter-spacing: 12px; color: #555; font-size: 1.1em; text-transform: uppercase; margin-bottom: 80px;">The Collections</h2>
@@ -98,8 +107,7 @@
     </footer>
 
     <script>
-        // 초고속 터보 엔진 탑재 (Wait 타임 최소화)
-        async function generateTurboArt() {
+        function generateTurboArt() {
             const userInput = document.getElementById('user-prompt').value;
             if(!userInput) { alert("그리려는 풍경을 입력해주세요."); return; }
 
@@ -110,32 +118,36 @@
 
             loading.style.display = 'block';
             resultArea.style.display = 'none';
+            img.src = ""; // 이전 이미지 초기화
 
-            // 속도를 위해 불필요한 키워드 제거 및 최적화
-            const enhancedPrompt = encodeURIComponent(userInput + ", 8k, luxury style, high quality, 9:16 aspect ratio");
-            const seed = Math.floor(Math.random() * 999999);
+            // 키워드 조합 및 인코딩
+            const enhancedPrompt = encodeURIComponent(userInput + ", high quality, 8k, cinematic lighting, vertical wallpaper, 9:16 ratio");
+            const seed = Math.floor(Math.random() * 1000000);
             
-            // Pollinations의 가장 빠른 기본 모델 사용
-            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
+            // 이미지 생성을 위한 Pollinations URL (안전한 파라미터 사용)
+            const apiUrl = `https://pollinations.ai/p/${enhancedPrompt}?width=1080&height=1920&seed=${seed}&nologo=true&enhance=true`;
 
-            // 1분 이상 대기하는 문제를 해결하기 위해 직접 소스 주입 및 즉시 표시
-            img.src = apiUrl;
-            
-            // 이미지가 로드되기 시작하면 바로 보여주기 (브라우저가 렌더링하면서 보여줌)
-            img.onload = () => {
+            // 1. 이미지 객체 생성 및 로드 시작
+            const tempImg = new Image();
+            tempImg.src = apiUrl;
+
+            // 2. 이미지가 로드되었을 때 실행
+            tempImg.onload = function() {
+                img.src = apiUrl;
+                downloadBtn.href = apiUrl;
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
-                downloadBtn.href = apiUrl;
                 resultArea.scrollIntoView({ behavior: 'smooth' });
             };
 
-            // 만약 15초가 지나도 로드가 안되면 강제로 보여주기 시도 (안전장치)
+            // 3. 로딩이 너무 오래 걸릴 경우 대비 (타임아웃 20초)
             setTimeout(() => {
-                if(loading.style.display !== 'none') {
+                if (loading.style.display !== 'none') {
+                    img.src = apiUrl; // 강제로 소스 주입
                     loading.style.display = 'none';
                     resultArea.style.display = 'block';
                 }
-            }, 15000);
+            }, 20000);
         }
     </script>
 </body>
