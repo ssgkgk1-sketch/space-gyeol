@@ -9,48 +9,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Poppins:wght@200;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --bg-deep: #050505;
-            --bronze: #A67C52;
-            --gold: #D4AF37;
-            --text-main: #e0e0e0;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
-
+        :root { --bg-deep: #050505; --bronze: #A67C52; --gold: #D4AF37; --text-main: #e0e0e0; --glass: rgba(255, 255, 255, 0.03); }
         body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; overflow-y: auto; }
-
         nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
-
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 120px 20px 60px 20px; box-sizing: border-box; }
         .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero_omotenashi.jpg'); background-size: cover; background-position: center; filter: brightness(0.3) blur(8px); transform: scale(1.1); z-index: -1; }
         .hero h1 { font-size: 4em; margin: 0; letter-spacing: 12px; color: var(--bronze); animation: glow 3s infinite alternate; }
         .welcome-text { font-size: 0.9em; color: var(--gold); margin-bottom: 20px; letter-spacing: 8px; text-transform: uppercase; font-family: 'Poppins', sans-serif; }
         .hero p { font-size: 1.3em; color: #888; margin-top: 15px; letter-spacing: 2px; }
-
         .ai-container { margin-top: 50px; width: 100%; max-width: 750px; }
         .ai-input-wrapper { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 124, 82, 0.3); border-radius: 60px; padding: 8px 8px 8px 30px; display: flex; align-items: center; backdrop-filter: blur(20px); }
         .ai-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; font-size: 1.1em; font-family: 'Gowun Batang'; }
         .ai-input-wrapper input:focus { outline: none; }
         .generate-btn { background: linear-gradient(45deg, var(--bronze), var(--gold)); color: #000; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; }
-        
         #result-area { display: none; margin-top: 40px; text-align: center; width: 100%; animation: fadeIn 1s ease; }
         .result-image-wrapper { width: 320px; height: 568px; margin: 0 auto 25px; border-radius: 20px; border: 2px solid var(--bronze); box-shadow: 0 0 50px rgba(166, 124, 82, 0.4); overflow: hidden; background: #111; }
         .result-image { width: 100%; height: 100%; object-fit: cover; }
         .download-btn { display: inline-block; padding: 12px 35px; border-radius: 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 0.95em; font-weight: 600; transition: 0.3s; }
         .download-btn:hover { background: var(--gold); color: #000; }
-
         .categories { padding: 80px 50px; max-width: 1200px; margin: 0 auto; }
         .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; }
         .cat-card { height: 450px; border-radius: 25px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
-
         #loading { display: none; margin-top: 30px; color: var(--gold); letter-spacing: 3px; font-size: 0.9em; }
         .spinner { width: 35px; height: 35px; border: 3px solid rgba(166, 124, 82, 0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes glow { from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.3); } to { text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         footer { padding: 60px; text-align: center; color: #333; font-size: 0.8em; border-top: 1px solid rgba(255,255,255,0.02); }
     </style>
 </head>
@@ -84,7 +70,15 @@
     </section>
     <footer><p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p></footer>
     <script>
-        function generateFinalArt() {
+        async function translate(text) {
+            try {
+                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ko&tl=en&dt=t&q=${encodeURIComponent(text)}`);
+                const json = await res.json();
+                return json[0][0][0];
+            } catch (e) { return text; }
+        }
+
+        async function generateFinalArt() {
             const input = document.getElementById('user-prompt').value;
             if(!input) { alert("키워드를 입력해 주세요."); return; }
             
@@ -96,8 +90,9 @@
             resultArea.style.display = 'none';
             img.src = "";
 
+            const translatedInput = await translate(input);
             const seed = Math.floor(Math.random() * 1000000);
-            const prompt = encodeURIComponent(input + ", masterpiece, high quality, 8k, luxury cinematic, 9:16 aspect ratio");
+            const prompt = encodeURIComponent(translatedInput + ", masterpiece, high quality, 8k, luxury cinematic, 9:16 aspect ratio");
             const url = `https://pollinations.ai/p/${prompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
 
             const loader = new Image();
@@ -107,19 +102,9 @@
                 loading.style.display = 'none';
                 resultArea.style.display = 'block';
                 document.getElementById('download-link').href = url;
-                
-                setTimeout(() => {
-                    window.scrollTo({
-                        top: resultArea.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }, 100);
+                setTimeout(() => { window.scrollTo({ top: resultArea.offsetTop - 100, behavior: 'smooth' }); }, 100);
             };
-
-            loader.onerror = () => {
-                alert("이미지 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
-                loading.style.display = 'none';
-            };
+            loader.onerror = () => { alert("이미지 생성 중 오류가 발생했습니다. 다시 시도해주세요."); loading.style.display = 'none'; };
         }
     </script>
 </body>
