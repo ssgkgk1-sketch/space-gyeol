@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공간의 결 - AI 프리미엄 배경화면 아틀리에</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Poppins:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #0a0a0a;
+            --bronze: #A67C52;
+            --gold: #D4AF37;
+            --text-main: #e0e0e0;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Gowun Batang', serif;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Header --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: var(--bronze);
+            text-transform: uppercase;
+        }
+
+        /* --- Hero Section (Omotenashi Style) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), radial-gradient(circle at center, #1a1512 0%, #0a0a0a 100%);
+            /* 나중에 이미지가 들어가면 아래 주석 해제 */
+            /* background-image: url('images/hero_omotenashi.jpg'); */
+            background-size: cover;
+            background-position: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.8em;
+            margin: 0;
+            font-weight: 400;
+            letter-spacing: 12px;
+            color: var(--bronze);
+            animation: glow 3s infinite alternate;
+        }
+
+        .hero .welcome-text {
+            font-size: 1.1em;
+            color: var(--gold);
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: #888;
+            margin-top: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            line-height: 1.8;
+        }
+
+        /* --- AI Input Section --- */
+        .ai-container {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 700px;
+            position: relative;
+        }
+
+        .ai-input-wrapper {
+            background: var(--glass);
+            border: 1px solid rgba(166, 124, 82, 0.2);
+            border-radius: 50px;
+            padding: 10px 10px 10px 30px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            transition: 0.4s;
+        }
+
+        .ai-input-wrapper:focus-within {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .ai-input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.1em;
+            font-family: 'Gowun Batang', serif;
+            padding: 10px 0;
+        }
+
+        .ai-input-wrapper input:focus { outline: none; }
+
+        .generate-btn {
+            background: var(--bronze);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn:hover {
+            background: var(--gold);
+            transform: scale(1.05);
+        }
+
+        /* --- Category Section --- */
+        .categories {
+            padding: 100px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .cat-card {
+            height: 450px;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: 0.5s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.5);
+            transition: 0.6s;
+        }
+
+        .cat-card:hover img {
+            filter: brightness(0.8);
+            transform: scale(1.08);
+        }
+
+        .cat-info {
+            position: absolute;
+            bottom: 40px;
+            left: 30px;
+        }
+
+        .cat-info h3 {
+            font-size: 1.6em;
+            margin: 0;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .cat-info p {
+            font-size: 0.8em;
+            color: var(--gold);
+            margin-top: 8px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(166, 124, 82, 0.2); }
+            to { text-shadow: 0 0 40px rgba(212, 175, 55, 0.5); }
+        }
+
+        footer {
+            padding: 80px 50px;
+            text-align: center;
+            color: #444;
+            font-size: 0.9em;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">空間의 結</div>
+    </nav>
+
+    <section class="hero">
+        <div class="welcome-text">Omotenashi Spirit</div>
+        <h1>공간의 결</h1>
+        <p>지극한 예우로 빚어낸,<br>당신만을 위한 단 하나의 풍경을 선사합니다.</p>
+
+        <div class="ai-container">
+            <div class="ai-input-wrapper">
+                <input type="text" placeholder="어떤 찰나의 미학을 그려드릴까요?">
+                <button class="generate-btn">CREATE</button>
+            </div>
+            <div style="margin-top: 25px; color: #555; font-size: 0.9em; letter-spacing: 1px;">
+                Ex) "기모노를 입고 정중히 인사하는 여인", "교토의 조용한 대나무 숲"
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2 style="text-align: center; letter-spacing: 8px; color: #333; font-size: 1em; text-transform: uppercase;">The Collections</h2>
+        <div class="category-grid">
+            <div class="cat-card">
+                <div style="width:100%; height:100%; background: #151515;"></div>
+                <div class="cat-info">
+                    <h3>자연의 숨결</h3>
+                    <p>SHIZEN</p>
+                </div>
+            </div>
+            <div class="cat-card">
+                <div style="width:100%; height:100%; background: #151515;"></div>
+                <div class="cat-info">
+                    <h3>생명의 눈빛</h3>
+                    <p>INOCHI</p>
+                </div>
+            </div>
+            <div class="cat-card">
+                <div style="width:100%; height:100%; background: #151515;"></div>
+                <div class="cat-info">
+                    <h3>풍요의 빛</h3>
+                    <p>YUTAKA</p>
+                </div>
+            </div>
+            <div class="cat-card">
+                <div style="width:100%; height:100%; background: #151515;"></div>
+                <div class="cat-info">
+                    <h3>인연의 기록</h3>
+                    <p>ENISHI</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 空間의 結 (Gyeol of Space). All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
