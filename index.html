@@ -50,7 +50,7 @@
         <div class="ai-container">
             <div class="ai-input-wrapper">
                 <input type="text" id="user-prompt" placeholder="어떤 찰나의 미학을 그려드릴까요?">
-                <button class="generate-btn" onclick="generateFinalArt()">CREATE</button>
+                <button class="generate-btn" onclick="generateArt()">CREATE</button>
             </div>
             <div id="loading"><div class="spinner"></div>당신의 결을 빚어내는 중입니다...</div>
             <div id="result-area">
@@ -78,10 +78,9 @@
             } catch (e) { return text; }
         }
 
-        async function generateFinalArt() {
+        async function generateArt() {
             const input = document.getElementById('user-prompt').value;
-            if(!input) { alert("키워드를 입력해 주세요."); return; }
-            
+            if(!input) return;
             const loading = document.getElementById('loading');
             const resultArea = document.getElementById('result-area');
             const img = document.getElementById('generated-img');
@@ -92,8 +91,13 @@
 
             const translatedInput = await translate(input);
             const seed = Math.floor(Math.random() * 1000000);
-            const prompt = encodeURIComponent(translatedInput + ", masterpiece, high quality, 8k, luxury cinematic, 9:16 aspect ratio");
-            const url = `https://pollinations.ai/p/${prompt}?width=1080&height=1920&seed=${seed}&nologo=true`;
+            
+            // 🎨 명품 퀄리티를 위한 마법의 키워드 세트 (Secret Prompt)
+            const luxuryKeywords = ", digital art, highly detailed, sharp focus, cinematic lighting, elegant composition, 8k resolution, professional wallpaper, aesthetic, masterpiece";
+            const finalPrompt = encodeURIComponent(translatedInput + luxuryKeywords);
+            
+            // 🚀 초고속 무료 엔진 주소
+            const url = `https://pollinations.ai/p/${finalPrompt}?width=1080&height=1920&seed=${seed}&nologo=true&enhance=false`;
 
             const loader = new Image();
             loader.src = url;
@@ -104,7 +108,11 @@
                 document.getElementById('download-link').href = url;
                 setTimeout(() => { window.scrollTo({ top: resultArea.offsetTop - 100, behavior: 'smooth' }); }, 100);
             };
-            loader.onerror = () => { alert("이미지 생성 중 오류가 발생했습니다. 다시 시도해주세요."); loading.style.display = 'none'; };
+            loader.onerror = () => {
+                // 서버 오류 시 자동 재시도 로직 (사장님 편의를 위해!)
+                console.log("Retry auto...");
+                setTimeout(generateArt, 1000);
+            };
         }
     </script>
 </body>
