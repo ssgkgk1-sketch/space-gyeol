@@ -90,9 +90,9 @@
             const translated = await translate(input);
             const seed = Math.floor(Math.random() * 1000000);
             
-            // 🚀 핵심: 타임아웃과 CORS 문제를 방지하기 위해 <img> 태그의 원초적 기능을 활용함
-            // 서버에 부담을 주지 않는 최적화된 주소 체계 적용
-            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(translated + ", luxury, cinematic, high quality, masterpiece, 8k")}?width=720&height=1280&seed=${seed}&nologo=true`;
+            // 🚀 핵심: 무료 서버가 절대 뻗지 않는 '초경량 다이어트' 프롬프트
+            // 화질/효과 키워드를 대폭 줄이고, 사이즈를 낮춰 서버 부담을 0으로 만듭니다.
+            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(translated + ", beautiful wallpaper")}?width=540&height=960&seed=${seed}&nologo=true`;
 
             // 가상의 캔버스에서 먼저 이미지를 구워옴 (비동기 추적)
             const loader = new Image();
