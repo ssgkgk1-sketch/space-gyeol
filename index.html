@@ -10,7 +10,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root { --bg-deep: #050505; --bronze: #A67C52; --gold: #D4AF37; --text-main: #e0e0e0; --glass: rgba(255, 255, 255, 0.03); }
-        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; overflow-y: auto; }
+        body, html { margin: 0; padding: 0; background-color: var(--bg-deep); color: var(--text-main); font-family: 'Gowun Batang', serif; scroll-behavior: smooth; overflow-x: hidden; }
+        
+        /* 쿠팡 배너 좌우 날개 스타일 */
+        .ad-banner-left, .ad-banner-right {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 500;
+            display: none; /* 모바일에서는 숨김 */
+        }
+        .ad-banner-left { left: 20px; }
+        .ad-banner-right { right: 20px; }
+        @media (min-width: 1400px) {
+            .ad-banner-left, .ad-banner-right { display: flex; flex-direction: column; gap: 20px; }
+        }
+
         nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); box-sizing: border-box; }
         .logo { font-size: 1.6em; font-weight: 700; letter-spacing: 6px; color: var(--bronze); text-transform: uppercase; }
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 120px 20px 60px 20px; box-sizing: border-box; }
@@ -45,6 +60,18 @@
     </style>
 </head>
 <body>
+    <!-- 쿠팡 파트너스 왼쪽 날개 -->
+    <div class="ad-banner-left">
+        <iframe src="https://coupa.ng/clVio2" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+        <iframe src="https://coupa.ng/clVipv" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+    </div>
+
+    <!-- 쿠팡 파트너스 오른쪽 날개 -->
+    <div class="ad-banner-right">
+        <iframe src="https://coupa.ng/clViq7" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+        <!-- 우측 배너 하나 더 추가 원하시면 여기에 넣으면 됩니다 -->
+    </div>
+
     <nav><div class="logo">空間의 結</div></nav>
     <section class="hero">
         <div class="hero-bg"></div>
